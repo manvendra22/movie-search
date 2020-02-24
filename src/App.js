@@ -13,9 +13,7 @@ class App extends Component {
     }
 
     this.handleInput = this.handleInput.bind(this)
-
-    // Throttling
-    this.handleInputThrottled = throttle(this.handleInput, 100)
+    this.handleInputThrottled = throttle(this.handleInput, 100) // Throttling
   }
 
   handleInput(e) {
@@ -23,12 +21,16 @@ class App extends Component {
     this.setState({ title })
 
     if (title.length > 2) {
-      this.fetchData()
+      this.fetchData(title)
+    } else {
+      this.setState({
+        movies: []
+      })
     }
   }
 
-  async fetchData() {
-    let response = await fetch(`https://www.omdbapi.com/?apikey=45af4549&page=1&s=${this.state.title}`)
+  async fetchData(title) {
+    let response = await fetch(`https://www.omdbapi.com/?apikey=45af4549&page=1&s=${title}`)
     response = await response.json()
 
     let movies = response.Search || []
@@ -42,16 +44,16 @@ class App extends Component {
 
     return (
       <div className="app">
-        <div className="app-container">
+        <div className="search-container">
           <input type="text" placeholder="Search movies..." className="search-bar" value={title} onChange={this.handleInputThrottled} />
-          <div>
-            {movies.map(movie => {
-              return <div key={movie.imdbID}>
-                <h3>{movie.Title}</h3>
-                <img src={movie.Poster} alt="movie" />
-              </div>
-            })}
-          </div>
+        </div>
+        <div className="data-container">
+          {movies.map(movie => {
+            return <div key={movie.imdbID} className="data">
+              <h3>{movie.Title}</h3>
+              <img className="poster" src={movie.Poster} alt="movie" />
+            </div>
+          })}
         </div>
       </div>
     );
