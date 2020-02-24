@@ -1,26 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+
+  state = {
+    title: "",
+    movies: []
+  }
+
+  render() {
+    const { title, movies } = this.state
+
+    return (
+      <div className="app">
+        <div className="app-container">
+          <input type="text" placeholder="Search movies..." className="search-bar" value={title} onChange={e => this.setState({ title: e.target.value })} />
+          <div>
+            {movies.map(movie => movie)}
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
 
 export default App;
